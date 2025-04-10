@@ -1,4 +1,0 @@
-
-[submodule "client-gateway"]
-	path = client-gateway
-	url = https://github.com/Nest-Microservices-sailla/client-gateway.git
