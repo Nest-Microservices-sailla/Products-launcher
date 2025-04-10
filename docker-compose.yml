@@ -1,6 +1,4 @@
-
 services:
-
   nats-server:
     image: nats:latest
     ports:
@@ -9,7 +7,7 @@ services:
   client-gateway:
     build: ./client-gateway
     ports:
-      - "${CLIENT_GATEWAY_PORT}:3000" 
+      - "${CLIENT_GATEWAY_PORT}:3000"
     volumes:
       - ./client-gateway/src:/usr/src/app/src
     command: npm run start:dev
@@ -29,7 +27,7 @@ services:
       - NATS_SERVERS=nats://nats-server:4222
       - DATABASE_URL=file:./dev.db
 
-# Orders MS
+  # Orders MS
   orders-ms:
     depends_on:
       - orders-db
@@ -42,8 +40,6 @@ services:
       - NODE_ENV=Dev
       - DATABASE_URL=postgresql://postgres:123456@orders-db:5432/ordersdb?schema=public
       - NATS_SERVERS=nats://nats-server:4222
-
-
 
   # Orders DB
   orders-db:
@@ -58,3 +54,21 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=ordersdb
+
+  # Payment-ms
+  payment-ms:
+    container_name: payment_ms
+    build: ./payment-ms
+    volumes:
+      - ./payment-ms/src:/usr/src/app/src
+    ports:
+      - ${PAYMENT_MS_PORT}:${PAYMENT_MS_PORT}
+    command: npm run start:dev
+    environment:
+      - PORT=${PAYMENT_MS_PORT}
+      - NODE_ENV=Dev
+      - NATS_SERVERS=nats://nats-server:4222
+      - STRIPE_SECRET=${STRIPE_SECRET}
+      - ENDPOINT_SECRET=${ENDPOINT_SECRET}
+      - SUCCESS_URL=${SUCCESS_URL}
+      - CANCEL_URL=${CANCEL_URL}
