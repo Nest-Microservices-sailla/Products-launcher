@@ -72,3 +72,16 @@ services:
       - ENDPOINT_SECRET=${ENDPOINT_SECRET}
       - SUCCESS_URL=${SUCCESS_URL}
       - CANCEL_URL=${CANCEL_URL}
+
+  auth-ms:
+    container_name: auth_ms
+    build: ./auth-ms
+    volumes:
+      - ./auth-ms/src:/usr/src/app/src
+    ports:
+      - ${AUTH_MS_PORT}:${AUTH_MS_PORT}
+    command: npm run start:dev
+    environment:
+      - PORT=${AUTH_MS_PORT}
+      - NODE_ENV=Dev
+      - NATS_SERVERS=nats://nats-server:4222
