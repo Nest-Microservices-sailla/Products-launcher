@@ -86,5 +86,7 @@ services:
       - NODE_ENV=Dev
       - NATS_SERVERS=nats://nats-server:4222
       - DATABASE_URL=${MONGODB_CONNECTION}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
 
 
