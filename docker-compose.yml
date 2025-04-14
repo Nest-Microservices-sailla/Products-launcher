@@ -13,7 +13,6 @@ services:
     command: npm run start:dev
     environment:
       - PORT=3000
-      - NODE_ENV=Dev
       - NATS_SERVERS=nats://nats-server:4222
 
   products-ms:
