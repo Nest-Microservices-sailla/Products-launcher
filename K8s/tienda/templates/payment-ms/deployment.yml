@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: payment-ms
+  name: payment-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-ms
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: payment-ms
+    spec:
+      containers:
+      - image: sebailla001/payment-ms
+        name: payment-ms
+        env:
+          - name: PORT
+            value: "3003"
+          - name: NATS_SERVERS
+            value: "nats://nats"
+          - name: SUCCESS_URL
+            value: "http://localhost:3003/payments/success"
+          - name: CANCEL_URL
+            value: "http://localhost:3003/payments/cancel"   
+          - name: STRIPE_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: stripe-secret
+                key: stripe_secret
+          - name: ENDPOINT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: endpoint-secret
+                key: endpoint_secret
+        resources: {}
+status: {}
